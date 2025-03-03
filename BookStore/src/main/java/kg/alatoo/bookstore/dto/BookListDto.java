@@ -12,7 +12,7 @@ import java.util.List;
 public class BookListDto {
     private Long id;
     private String title;
-    private List<String> authors;
+    private String author; //Simplified to String for the author and renamed it from authors
     private String publisher;
     private String isbn;
 }

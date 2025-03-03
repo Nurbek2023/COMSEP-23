@@ -15,8 +15,8 @@ public class BookDto {
     private String author;
     private String isbn;
 
-    private PublisherDto publisher;
+    private String publisher;  //changed Publisher to String
 
-    private List<AuthorDto> authors;
+    private String authors; //changed Publisher to String
 
 }

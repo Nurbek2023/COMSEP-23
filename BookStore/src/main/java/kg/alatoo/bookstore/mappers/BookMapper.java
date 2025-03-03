@@ -6,6 +6,7 @@ import kg.alatoo.bookstore.entities.Book;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public interface BookMapper {
 
     BookListDto bookToBookListDto(Book book);
