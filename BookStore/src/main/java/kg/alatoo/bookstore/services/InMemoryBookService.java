@@ -4,10 +4,9 @@ import kg.alatoo.bookstore.dto.BookListDto;
 import kg.alatoo.bookstore.entities.Book;
 import kg.alatoo.bookstore.exceptions.NotFoundException;
 import kg.alatoo.bookstore.mappers.BookMapper;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,8 +72,8 @@ public class InMemoryBookService implements BookService {
     }
 
     @Override
-    public List<BookListDto> getBooks() {
-        return bookMapper.booksToBookListDtos(new ArrayList<>(books.values()));
+    public Page<BookListDto> getBooks(Integer pageNumber, Integer pageSize) {
+        return null;//bookMapper.booksToBookListDtos(new ArrayList<>(books.values()));
     }
 
     @Override

@@ -9,16 +9,20 @@ import kg.alatoo.bookstore.repositories.AuthorRepository;
 import kg.alatoo.bookstore.repositories.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 @Primary
 public class DatabaseBookService implements BookService {
+
+    private static final Integer DEFAULT_PAGE_SIZE = 20;
+    private static final Integer DEFAULT_PAGE = 0;
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
@@ -46,10 +50,28 @@ public class DatabaseBookService implements BookService {
     }
 
     @Override
-    public List<BookListDto> getBooks() {
-        ArrayList<Book> books = new ArrayList<>();
-        bookRepository.findAll().forEach(books::add);
-        return bookMapper.booksToBookListDtos(books);
+    public Page<BookListDto> getBooks(Integer pageNumber, Integer pageSize) {
+        return bookRepository
+                .findAll(generatePagable(pageNumber, pageSize))
+                .map(bookMapper::bookToBookListDto);
+    }
+
+    private static Pageable generatePagable(Integer pageNumber, Integer pageSize) {
+        int requestedPage, requestedPageSize;
+
+        if (pageSize == null || pageSize <= 0) {
+            requestedPageSize = DEFAULT_PAGE_SIZE;
+        } else {
+            requestedPageSize = pageSize;
+        }
+
+        if (pageNumber == null || pageNumber <= 0) {
+            requestedPage = DEFAULT_PAGE;
+        } else {
+            requestedPage = pageNumber - 1;
+        }
+
+        return PageRequest.of(requestedPage, requestedPageSize);
     }
 
     @Override

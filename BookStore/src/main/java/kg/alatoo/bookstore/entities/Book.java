@@ -2,9 +2,7 @@ package kg.alatoo.bookstore.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
@@ -28,7 +26,7 @@ public class Book {
     @Column(nullable = false, length = 20)
     private String title;
     private String description;
-    private String author;
+//    private String author;
     private String isbn;
 
     @ManyToOne

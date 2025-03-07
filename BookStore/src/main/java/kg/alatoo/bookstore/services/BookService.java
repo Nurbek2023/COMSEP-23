@@ -2,6 +2,7 @@ package kg.alatoo.bookstore.services;
 
 import kg.alatoo.bookstore.dto.BookListDto;
 import kg.alatoo.bookstore.entities.Book;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface BookService {
 
     Book addBook(Book book);
 
-    List<BookListDto> getBooks();
+    Page<BookListDto> getBooks(Integer pageNumber, Integer pageSize);
 
     List<BookListDto> getBooksByAuthor(String author);
 

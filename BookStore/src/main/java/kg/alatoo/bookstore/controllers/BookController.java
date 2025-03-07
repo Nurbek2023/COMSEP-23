@@ -1,18 +1,15 @@
 package kg.alatoo.bookstore.controllers;
 
-import jakarta.validation.Valid;
 import kg.alatoo.bookstore.dto.BookListDto;
-import kg.alatoo.bookstore.mappers.BookMapper;
 import kg.alatoo.bookstore.services.BookService;
 import kg.alatoo.bookstore.entities.Book;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -21,44 +18,31 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
-    private final BookMapper bookMapper;  // Inject BookMapper
 
-//    @GetMapping("/two/{id}")
-//    public ResponseEntity<Book> getBook(@PathVariable long id) {
-//        Book bookById = bookService.getBookById(id);
-//        if (bookById == null) {
-//            ResponseEntity.status(HttpStatus.NOT_FOUND);
-//        }
-//        return ResponseEntity.ok(bookById);
-//    }
-
-//    @GetMapping("{id}")//author has null value while authors and publisher has multiple value
-//    public Book getBookById(@PathVariable long id) {
-//        return bookService.getBookById(id);
-//    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<BookListDto> getBookById(@PathVariable long id) {
+    /*@GetMapping("{id}")
+    public ResponseEntity<Book> getBook(@PathVariable long id) {
         Book bookById = bookService.getBookById(id);
         if (bookById == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            ResponseEntity.status(HttpStatus.NOT_FOUND);
         }
-        // Map the Book entity to BookListDto
-        BookListDto bookListDto = bookMapper.bookToBookListDto(bookById);
-        return ResponseEntity.ok(bookListDto);
+        return ResponseEntity.ok(bookById);
+    }*/
+    @GetMapping("{id}")
+    public Book getBookById(@PathVariable long id) {
+        return bookService.getBookById(id);
     }
 
 
+
     @GetMapping
-    public List<BookListDto> getBooks( //has proper output
-            @RequestParam(required = false) String author
+    public Page<BookListDto> getBooks(
+            @RequestParam(required = false) Integer pageNumber,
+            @RequestParam(required = false) Integer pageSize,
+            @RequestParam(required = false) String[] sortBy //TODO
             ) {
-        if (author == null) {
             log.debug("Getting all books");
-            return bookService.getBooks();
-        }
-        log.debug("Getting all books of author {}", author);
-        return bookService.getBooksByAuthor(author);
+            return bookService.getBooks(pageNumber, pageSize);
+
     }
 
     @PostMapping
